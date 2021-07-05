@@ -24,7 +24,7 @@
       user:
         name: webadmin
         shell: /bin/bash
-        password : $1$QbUARykG$p2nthVG8AkDvabKPHwboa1
+        password : 1a772778dc37bcd94b730d27c89f4912f72fa136e32b932d9b7a6d422755c3ce35f9f397a388cd2b26d9fb77b5fc3db5fcb05acb3341f2923cc03fc37156a5f2
 
     - name: Criando o arquivo 98_4linux
       copy:

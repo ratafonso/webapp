@@ -5,4 +5,4 @@
   ipaddress: 172.16.0.100
   memory: 3072
   cpus: 1
-  provision: provision/ansible/manager.yaml
+  provision: provision/webapp.yaml
