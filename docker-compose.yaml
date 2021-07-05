@@ -1,0 +1,29 @@
+nginx:
+    build: ./nginx
+    links:
+        - cluster-one:cluster-one
+        - cluster-two:cluster-two
+    ports:
+        - "80:80"
+cluster-one:
+    build: ./app
+    volumes:
+        - ./app:/app
+    env_file:
+        - ".env"
+    ports:
+        - "3000"
+    links:
+        - redis
+    command: go build main.go
+cluster-two:
+    build: ./app
+    volumes:
+        - ./app:/app
+    env_file:
+        - ".env"
+    ports:
+        - "3000"
+    links:
+        - redis
+    command: go build main.go
