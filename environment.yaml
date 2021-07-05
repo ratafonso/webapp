@@ -1,0 +1,8 @@
+---
+- name: webapp
+  box: trombik/ansible-centos-7.3-x86_64
+  hostname: webapp
+  ipaddress: 172.16.0.100
+  memory: 3072
+  cpus: 1
+  provision: provision/ansible/manager.yaml

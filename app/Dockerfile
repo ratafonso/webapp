@@ -7,6 +7,5 @@ ENV DBPASS $DBPASS
 ENV DBNAME $DBNAME
 
 WORKDIR /src/app
-ADD package.json package.json
-ADD index.js index.js
+ADD main.go main.go
 RUN npm install
