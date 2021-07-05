@@ -3,18 +3,18 @@ provider "aws" {
 }
 
 # Criando a VPC
-resource "aws_vpc" "VPC-ADT" {
+resource "aws_vpc" "VPC-SERASA" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
   tags = {
-    "name" = "VPC-ADT"
+    "name" = "VPC-SERASa"
   }
 }
 
 # Criando a Subnet Publica A na AZ 1a
 
 resource "aws_subnet" "PublicSubnetA" {
-  vpc_id            = aws_vpc.VPC-ADT.id
+  vpc_id            = aws_vpc.VPC-SERASA.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = "us-east-1a"
   tags = {
@@ -25,7 +25,7 @@ resource "aws_subnet" "PublicSubnetA" {
 # Criando a Subnet Publica B na AZ 1b
 
 resource "aws_subnet" "PublicSubnetB" {
-  vpc_id            = aws_vpc.VPC-ADT.id
+  vpc_id            = aws_vpc.VPC-SERASA.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1b"
   tags = {
@@ -33,98 +33,7 @@ resource "aws_subnet" "PublicSubnetB" {
   }
 }
 
-# Criando a Subnet Privada A para Frontend na AZ 1a
-
-resource "aws_subnet" "PrivateSubnetA" {
-  vpc_id            = aws_vpc.VPC-ADT.id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1a"
-  tags = {
-    name = "Private_FE"
-  }
-}
-
-resource "aws_subnet" "PrivateSubnetB" {
-  vpc_id            = aws_vpc.VPC-ADT.id
-  cidr_block        = "10.0.3.0/24"
-  availability_zone = "us-east-1a"
-  tags = {
-    "name" = "Private_BE"
-  }
-}
-
-resource "aws_subnet" "PrivateSubnetC" {
-  vpc_id            = aws_vpc.VPC-ADT.id
-  cidr_block        = "10.0.4.0/24"
-  availability_zone = "us-east-1a"
-  tags = {
-    "name" = "Private_DB_A"
-  }
-}
-
-resource "aws_subnet" "PrivateSubnetD" {
-  vpc_id            = aws_vpc.VPC-ADT.id
-  cidr_block        = "10.0.5.0/24"
-  availability_zone = "us-east-1b"
-  tags = {
-    "name" = "Private_DB_B"
-  }
-}
-
-resource "aws_instance" "BastionHost" {
-  ami           = "ami-0fa60543f60171fe3"
-  instance_type = "t2.micro"
-  subnet_id   = aws_subnet.PublicSubnetA.id
-  tags = {
-    "name" = "BastionHost"
-  }
-}
-
-resource "aws_instance" "Ansible-Jenkins" {
-  ami           = "ami-09e67e426f25ce0d7"
-  instance_type = "t2.micro"
-  subnet_id   = aws_subnet.PrivateSubnetA.id
-  tags = {
-    "name" = "Ansible-Jenkins"
-  }
-}
-
-resource "aws_instance" "WebServerFE" {
-  ami           = "ami-09e67e426f25ce0d7"
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.PrivateSubnetA.id
-  tags = {
-    "name" = "WebServer_FE"
-  }
-}
-
-resource "aws_instance" "WebServerBE" {
-  ami           = "ami-09e67e426f25ce0d7"
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.PrivateSubnetB.id
-  tags = {
-    "name" = "WebServer_BE"
-  }
-}
-
-resource "aws_db_instance" "DBServer" {
-  allocated_storage    = 10
-  engine               = "mysql"
-  engine_version       = "5.7"
-  instance_class       = "db.t2.micro"
-  name                 = "adtsysdb"
-  username             = "admin"
-  password             = "Kiw23DScvbA1*"
-  skip_final_snapshot  = true
-  db_subnet_group_name = aws_db_subnet_group.db-net-group.id
-}
-
-resource "aws_db_subnet_group" "db-net-group" {
-  name       = "dbsubnet"
-  subnet_ids = [aws_subnet.PrivateSubnetC.id, aws_subnet.PrivateSubnetD.id]
-}
-
-resource "aws_eip" "NAT" {
+resource "aws_eip" "NIG" {
   vpc        = true
   depends_on = [aws_internet_gateway.IGW]
   tags = {
@@ -133,7 +42,7 @@ resource "aws_eip" "NAT" {
 }
 
 resource "aws_internet_gateway" "IGW" {
-  vpc_id = aws_vpc.VPC-ADT.id
+  vpc_id = aws_vpc.VPC-SERASA.id
   tags = {
     "name" = "IGW"
   }
