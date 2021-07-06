@@ -2,10 +2,6 @@
 
 Este projeto tem como intuito implementar uma aplicação WEB rodando em GO para o Processo Seletivo da Serasa Experian. A Infraestrutura e aplicação serão criados dentro da Amazon AWS.
 
-# Video Auto Explicativo
-
-<https://ratafonso.wistia.com/medias/1h0z8kz9cy>
-
 ## Pre-Requisitos de Ambiente
 
 - Ter uma conta gratuita na AWS Amazon;
@@ -24,6 +20,8 @@ Nessa etapa iremos construir a infraestrutura necessária para hospedar a aplica
 
 Crie um Diretório para receber os arquivos da aplicação localizados no GitHUB.
 
+Lembre-se de configurar as suas credenciais de acesso ao ambiente da AWS através do comando ```aws configure```. É necessário criar uma key pair para que o terraform se conecte a AWS. É possível gerar essa chave executando o comando ```ssh-keygen```, serão geradas duas chaves dentro do seu home, uma com a extensão .pub (Chave Pública) e outra sem extensão (Chave Privada), copie o conteúdo da chave .pub gerada anteriormente. Abra a console da AWS, Pesquise por EC2. No Painel EC2, localize Key Pairs a sua esquerda. vá em Acções/Importar Key Pair, coloque um nome para esta chave e apóse cole o conteúdo copiado anteriormente dentro da Text Box, ou navegue até aonde o arquivo se encontra. Finalize clicando em Import Key Pair.
+
 ### Windows
 
 ```mkdir webapp```
@@ -32,13 +30,15 @@ Crie um Diretório para receber os arquivos da aplicação localizados no GitHUB
 
 ### Linux
 
-```# mkdir /usr/src/webapp```
+```# mkdir /webapp```
 
-```# cd /usr/src/webapp```
+```# cd /webapp```
 
 Execute a clonagem do repositório Git no diretório ```webapp```.
 
 ```git clone https://github.com/ratafonso/webapp.git```
+
+Altere a variável "key_name" localizada dentro do arquivo "main.tf" para a chave Key Pair gerada anteriormente. Coloque o nome que ficou definido nas etapas anteriores.
 
 Execute a inicialização do terraform dentro do diretório da aplicação
 
@@ -53,6 +53,14 @@ Após a validação sem erros, execute o comando para iniciar a criação da Inf
 ```# terraform apply```
 
 =========================================================================================================
+
+Após a Infraestrutura já estar criada, acesse a sua console da AWS e copie o Public DNS Name ou o Public IP da sua instância EC2, iremos precisar dela para seguir para os próximos passos.
+
+Com a chave SSH gerada anteriormente, utilize um client SSH para acessar a sua instância EC2.
+
+ssh -i <chavessh> ubuntu@nomedainstancia
+
+Acesse o diretório clonado do repositório e siga as etapas abaixo:
 
 Utilize o comando do Docker Compose para subir os containers. É necessário rodar esse comando dentro do diretório da aplicação.
 
