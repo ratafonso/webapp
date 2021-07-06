@@ -58,7 +58,7 @@ Após a Infraestrutura já estar criada, acesse a sua console da AWS e copie o P
 
 Com a chave SSH gerada anteriormente, utilize um client SSH para acessar a sua instância EC2.
 
-ssh -i <chavessh> ubuntu@nomedainstancia
+```# ssh -i chavessh.pem ubuntu@nomedainstancia```
 
 Acesse o diretório clonado do repositório e siga as etapas abaixo:
 
