@@ -1,0 +1,11 @@
+- hosts: all
+
+  become: yes
+  tasks:
+  - name: "Copia arquivo de configuração nginx"
+    shell: scp /home/rafael/ansible/nginx/nginx.conf ubuntu@ec2-3-212-27-93.compute-1.amazonaws.com:/etc/nginx/nginx.conf
+    copy:
+      src: '/home/rafael/ansible/nginx/nginx.conf'
+      dest: '/etc/nginx/nginx.conf'
+      remote_src: yes
+    become: yes
